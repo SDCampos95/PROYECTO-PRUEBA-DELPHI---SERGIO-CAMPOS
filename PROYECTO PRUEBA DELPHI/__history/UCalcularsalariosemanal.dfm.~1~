@@ -1,0 +1,87 @@
+object FrmCalcularSalarioSemanal: TFrmCalcularSalarioSemanal
+  Left = 486
+  Top = 204
+  Width = 601
+  Height = 320
+  AutoSize = True
+  Color = clBtnFace
+  Font.Charset = ANSI_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -16
+  Font.Name = 'Arial Narrow'
+  Font.Style = [fsBold]
+  OldCreateOrder = False
+  PixelsPerInch = 96
+  TextHeight = 20
+  object Panel1: TPanel
+    Left = 0
+    Top = 0
+    Width = 585
+    Height = 49
+    TabOrder = 0
+    object Label1: TLabel
+      Left = 131
+      Top = 16
+      Width = 324
+      Height = 20
+      Caption = 'CALCULO DE SALARIO SEMANAL POR EMPLEADO'
+      Font.Charset = ANSI_CHARSET
+      Font.Color = clHighlight
+      Font.Height = -16
+      Font.Name = 'Arial Narrow'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+  end
+  object Panel2: TPanel
+    Left = 0
+    Top = 56
+    Width = 585
+    Height = 225
+    TabOrder = 1
+    object Label2: TLabel
+      Left = 48
+      Top = 16
+      Width = 145
+      Height = 20
+      Caption = 'Nombre del empleado: '
+    end
+    object Label3: TLabel
+      Left = 8
+      Top = 48
+      Width = 185
+      Height = 20
+      Caption = 'Horas trabajadas o laboradas:'
+    end
+    object Edit1: TEdit
+      Left = 200
+      Top = 16
+      Width = 377
+      Height = 28
+      TabOrder = 0
+    end
+    object Edit2: TEdit
+      Left = 200
+      Top = 48
+      Width = 105
+      Height = 28
+      TabOrder = 1
+    end
+    object BitBtn1: TBitBtn
+      Left = 216
+      Top = 88
+      Width = 153
+      Height = 49
+      Caption = '&Calcular Salario'
+      TabOrder = 2
+      OnClick = BitBtn1Click
+    end
+    object Memo1: TMemo
+      Left = 8
+      Top = 152
+      Width = 569
+      Height = 65
+      TabOrder = 3
+    end
+  end
+end

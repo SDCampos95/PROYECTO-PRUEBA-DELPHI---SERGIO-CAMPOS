@@ -1,0 +1,159 @@
+unit UControladorDatos;
+
+interface
+
+Type
+  TUControladorDatos = class
+  private
+    { Private declarations }
+    public
+
+    //Variables Globales //
+    Clie_Identificacion   : Integer;
+    Clie_Nombre           : String;
+    Clie_Direccion        : String;
+
+    Prod_PRODUCTO         : Integer;
+    Prod_NOMBRE_PRODUCTO  : String;
+    Prod_VALOR            : Currency;
+
+    Fact_Cliente_id       : String;
+    Fact_NUMERO           : String;
+    Fact_Nombre           : String;
+    Fact_Producto_id      : Integer;
+    Fact_Cantidad         : Double;
+    Fact_Valor_Unit       : Currency;
+    Fact_Valor_Total       : Currency;
+
+    Cons_Factura   : Currency;
+
+
+    Public Function ValidarClienteBD(Cliente_Id:Integer):String;
+    Public Function RegistrarClienteBD(Actividad:String):String;
+
+    Public Function ValidarProductoBD(Producto_Id:Integer):String;
+    Public Function RegistrarProductoBD(Actividad:String):String;
+
+    Function Validar_Cliente_FacturaBD(Fact_Cliente_id:Integer):String;
+
+    Function Registrar_Generar_Factura(Actividad:String):String;
+
+
+    { Public declarations }
+  end;
+
+implementation
+   uses UModeloDatos;
+
+//******* Validacion de Existencia del numero del cliente ingresaro en base de datos.
+Function TUControladorDatos.ValidarClienteBD(Cliente_Id:Integer):String;
+begin
+    DataModule1 := TDataModule1.Create(Nil);
+    Try
+        If ( DataModule1.ValidarClienteBD(Self,Cliente_Id) = True ) Then     // DATAMODULE1 : ES TODA EL MODULO //
+         Begin
+            Result := 'El Cliente ya se encuentra registrado en la base de datos.';
+         End
+         Else
+         Begin Result := '' ;
+
+         End;
+
+    Finally
+      DataModule1.Free;
+    End;
+end;
+
+//**** Acciones y validaciones para el insert o update de un registro en la tabla cliente.
+Function TUControladorDatos.RegistrarClienteBD(Actividad:String):String;
+    Var Modelo_Gestion : TDataModule1;
+begin
+    DataModule1 := TDataModule1.Create(Nil);
+    Try
+      If ( DataModule1.RegistrarClienteBD(Self,Actividad) = 2 ) Then
+      Begin
+          Result := 'Error.';
+      End
+        Else
+            Begin
+                Result := 'Ok';
+            End;
+    Finally
+      DataModule1.Free;
+    End;
+end;
+
+//******* Validacion de Existencia del numero del PRODUCTO ingresaro en base de datos.
+Function TUControladorDatos.ValidarProductoBD(Producto_Id:Integer):String;
+    Var Modelo_Gestion : TDataModule1;
+begin
+    DataModule1 := TDataModule1.Create(Nil);
+    Try
+        If ( DataModule1.ValidarProductoBD(Self,Producto_Id) = True ) Then
+         Begin
+            Result := 'El Cliente ya se encuentra registrado en la base de datos.';
+         End Else Begin Result := '' ; End;
+    Finally
+      DataModule1.Free;
+    End;
+end;
+
+Function TUControladorDatos.RegistrarProductoBD(Actividad:String):String;
+    Var Modelo_Gestion : TDataModule1;
+begin
+    DataModule1 := TDataModule1.Create(Nil); // INICIALIZAR MODELO DEDATOS //
+    Try
+      If ( DataModule1.RegistrarProductoBD(Self,Actividad) = 2 ) Then
+      Begin
+          Result := 'Error.';
+      End
+        Else
+            Begin
+                Result := 'Ok';
+            End;
+    Finally
+      DataModule1.Free;
+    End;
+end;
+
+Function TUControladorDatos.Validar_Cliente_FacturaBD(Fact_Cliente_id:Integer):String;
+    Var Modelo_Gestion : TDataModule1;
+begin
+    DataModule1 := TDataModule1.Create(Nil);
+    Try
+        If ( DataModule1.Validar_Cliente_FacturaBD(Self,Fact_Cliente_id) = True ) Then
+         Begin
+            Result := 'El Cliente ya se encuentra registrado en la base de datos.';
+         End
+         Else
+         Begin
+            Result := '';
+         End;
+    Finally
+      DataModule1.Free;
+    End;
+end;
+
+Function TUControladorDatos.Registrar_Generar_Factura(Actividad:String):String;
+    Var Modelo_Gestion : TDataModule1;
+begin
+    DataModule1 := TDataModule1.Create(Nil); // INICIALIZAR MODELO DEDATOS //
+    Try
+      If ( DataModule1.Registrar_Generar_Factura(Self,Actividad) = 2 ) Then
+      Begin
+          Result := 'Error.';
+      End
+        Else
+            Begin
+                Result := 'Ok';
+            End;
+    Finally
+      DataModule1.Free;
+    End;
+end;
+
+
+
+
+
+end.

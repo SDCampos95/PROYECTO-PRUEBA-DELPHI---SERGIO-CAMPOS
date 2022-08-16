@@ -1,0 +1,64 @@
+object FrmPrincipal: TFrmPrincipal
+  Left = 439
+  Top = 166
+  AutoSize = True
+  BorderStyle = bsSingle
+  ClientHeight = 385
+  ClientWidth = 489
+  Color = clBtnFace
+  DefaultMonitor = dmMainForm
+  Font.Charset = ANSI_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -16
+  Font.Name = 'Arial Narrow'
+  Font.Style = [fsBold]
+  FormStyle = fsMDIForm
+  Menu = MainMenu1
+  Position = poMainFormCenter
+  Visible = True
+  TextHeight = 20
+  object Panel1: TPanel
+    Left = 0
+    Top = 0
+    Width = 489
+    Height = 385
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -16
+    Font.Name = 'Arial Narrow'
+    Font.Style = [fsBold]
+    ParentFont = False
+    TabOrder = 0
+    object Image1: TImage
+      Left = 0
+      Top = 0
+      Width = 489
+      Height = 385
+    end
+  end
+  object MainMenu1: TMainMenu
+    Left = 40
+    Top = 32
+    object Ejercicio11: TMenuItem
+      Caption = 'Ejercicio 1'
+      object SerieFibonacci1: TMenuItem
+        Caption = 'Serie Fibonacci'
+        OnClick = SerieFibonacci1Click
+      end
+    end
+    object Ejercicio21: TMenuItem
+      Caption = 'Ejercicio 2'
+      object SalariosSemanales1: TMenuItem
+        Caption = 'Salario Semanal'
+        OnClick = SalariosSemanales1Click
+      end
+    end
+    object Ejercicio31: TMenuItem
+      Caption = 'Ejercicio 3'
+      object Clientes1: TMenuItem
+        Caption = 'Gestion Clientes'
+        OnClick = Clientes1Click
+      end
+    end
+  end
+end

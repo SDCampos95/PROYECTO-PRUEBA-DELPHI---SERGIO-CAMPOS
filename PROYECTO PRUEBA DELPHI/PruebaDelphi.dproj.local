@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2022/08/12 22:52:02.000.496,=C:\Users\OJDCV\OneDrive\Documentos\PROYECTO PRUEBA DELPHI\Unit1.pas</Transaction>
+    <Transaction>2022/08/12 22:52:26.000.508,C:\Users\OJDCV\OneDrive\Documentos\PROYECTO PRUEBA DELPHI\CRUD MVC\View\UProducto.pas=C:\Users\OJDCV\OneDrive\Documentos\PROYECTO PRUEBA DELPHI\Unit1.pas</Transaction>
+    <Transaction>2022/08/12 22:53:58.000.213,=C:\Users\OJDCV\OneDrive\Documentos\PROYECTO PRUEBA DELPHI\Unit1.pas</Transaction>
+    <Transaction>2022/08/12 22:55:29.000.093,C:\Users\OJDCV\OneDrive\Documentos\PROYECTO PRUEBA DELPHI\CRUD MVC\Modelo\UMProducto.pas=C:\Users\OJDCV\OneDrive\Documentos\PROYECTO PRUEBA DELPHI\Unit1.pas</Transaction>
+    <Transaction>2022/08/12 22:55:59.000.557,=C:\Users\OJDCV\OneDrive\Documentos\PROYECTO PRUEBA DELPHI\Unit1.pas</Transaction>
+    <Transaction>2022/08/12 22:57:53.000.178,C:\Users\OJDCV\OneDrive\Documentos\PROYECTO PRUEBA DELPHI\CRUD MVC\Control\UControladorDatos.pas=C:\Users\OJDCV\OneDrive\Documentos\PROYECTO PRUEBA DELPHI\Unit1.pas</Transaction>
+    <Transaction>2022/08/12 23:00:48.000.530,=C:\Users\OJDCV\OneDrive\Documentos\PROYECTO PRUEBA DELPHI\Unit1.pas</Transaction>
+    <Transaction>2022/08/12 23:01:30.000.335,C:\Users\OJDCV\OneDrive\Documentos\PROYECTO PRUEBA DELPHI\CRUD MVC\Modelo\UModeloDatos.pas=C:\Users\OJDCV\OneDrive\Documentos\PROYECTO PRUEBA DELPHI\Unit1.pas</Transaction>
+    <Transaction>2022/08/12 23:26:44.000.357,=C:\Users\OJDCV\OneDrive\Documentos\PROYECTO PRUEBA DELPHI\Unit1.pas</Transaction>
+    <Transaction>2022/08/12 23:26:54.000.267,C:\Users\OJDCV\OneDrive\Documentos\PROYECTO PRUEBA DELPHI\CRUD MVC\Modelo\UModeloDatos.pas=</Transaction>
+    <Transaction>2022/08/12 23:27:47.000.832,C:\Users\OJDCV\OneDrive\Documentos\PROYECTO PRUEBA DELPHI\CRUD MVC\Modelo\UModeloDatos.pas=C:\Users\OJDCV\OneDrive\Documentos\PROYECTO PRUEBA DELPHI\Unit1.pas</Transaction>
+    <Transaction>2022/08/12 23:27:47.000.832,C:\Users\OJDCV\OneDrive\Documentos\PROYECTO PRUEBA DELPHI\CRUD MVC\Modelo\UModeloDatos.dfm=C:\Users\OJDCV\OneDrive\Documentos\PROYECTO PRUEBA DELPHI\Unit1.dfm</Transaction>
+  </Transactions>
+	<ProjectSortOrder AutoSort="0" SortType="0">
+    <File Path="CRUD MVC"/>
+    <File Path="CRUD MVC\Control"/>
+    <File Path="CRUD MVC\Control\UControladorDatos.pas"/>
+    <File Path="CRUD MVC\Datamodulo"/>
+    <File Path="CRUD MVC\Datamodulo\DtConexion.pas"/>
+    <File Path="CRUD MVC\Datamodulo\DtConexion.dfm"/>
+    <File Path="CRUD MVC\Modelo"/>
+    <File Path="CRUD MVC\Modelo\UModeloDatos.pas"/>
+    <File Path="CRUD MVC\Modelo\UModeloDatos.dfm"/>
+    <File Path="CRUD MVC\View"/>
+    <File Path="CRUD MVC\View\UCrudClientes.pas"/>
+    <File Path="CRUD MVC\View\UCrudClientes.dfm"/>
+    <File Path="UCalcularsalariosemanal.pas"/>
+    <File Path="UCalcularsalariosemanal.dfm"/>
+    <File Path="UEjercicio1.pas"/>
+    <File Path="UEjercicio1.dfm"/>
+    <File Path="UPrincipal.pas"/>
+    <File Path="UPrincipal.dfm"/>
+  </ProjectSortOrder>
+</BorlandProject>

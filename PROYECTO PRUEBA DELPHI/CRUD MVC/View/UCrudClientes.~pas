@@ -1,0 +1,163 @@
+unit UCrudClientes;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms, DtConexion,
+  Dialogs, StdCtrls, ExtCtrls, Grids, DBGrids, Buttons, DB, ADODB;
+
+type
+  TFrmCrudClientes = class(TForm)
+    Panel1: TPanel;
+    Panel2: TPanel;
+    Label1: TLabel;
+    GroupBox1: TGroupBox;
+    Label2: TLabel;
+    Label3: TLabel;
+    Label4: TLabel;
+    GroupBox2: TGroupBox;
+    Label5: TLabel;
+    Label6: TLabel;
+    Label7: TLabel;
+    Label8: TLabel;
+    Label9: TLabel;
+    BitBtn2: TBitBtn;
+    BitBtn1: TBitBtn;
+    BitBtn3: TBitBtn;
+    BitBtn4: TBitBtn;
+    BitBtn5: TBitBtn;
+    BitBtn6: TBitBtn;
+    GroupBox3: TGroupBox;
+    DBGrid1: TDBGrid;
+    BitBtn7: TBitBtn;
+    Edit1: TEdit;
+    Edit2: TEdit;
+    Edit3: TEdit;
+    Edit4: TEdit;
+    Edit5: TEdit;
+    Edit6: TEdit;
+    Edit7: TEdit;
+    Edit8: TEdit;
+    QryClientes: TADOQuery;
+    QryClientesCLIENTE: TIntegerField;
+    QryClientesNOMBRE_CLIENTE: TStringField;
+    QryClientesDIRECCION: TStringField;
+    QryProducto: TADOQuery;
+    QryProductoPRODUCTO: TIntegerField;
+    QryProductoNOMBRE_PRODUCTO: TStringField;
+    QryProductoVALOR: TBCDField;
+    QryProductoNUMERO: TStringField;
+    QryProductoPRODUCTO_1: TIntegerField;
+    QryProductoCANTIDAD: TBCDField;
+    QryProductoVALOR_1: TBCDField;
+    QryProductoNUMERO_1: TStringField;
+    QryProductoFECHA: TDateTimeField;
+    QryProductoCLIENTE: TIntegerField;
+    QryProductoTOTAL: TBCDField;
+    procedure BitBtn2Click(Sender: TObject);
+    procedure validar_campos;
+
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  FrmCrudClientes: TFrmCrudClientes;
+  validar : Boolean;
+
+implementation
+
+
+{$R *.dfm}
+
+procedure TFrmCrudClientes.BitBtn2Click(Sender: TObject);
+begin
+
+  validar_campos();
+
+  if validar = True then
+  begin
+    if MessageDlg('¿Está seguro de guardar la información ingresada?', MTCONFIRMATION, [MBYES, MBNO], 0) = MRYES then
+    begin
+      QryClientes.Insert;
+      QryClientesCLIENTE.Value        := StrToInt(Edit1.Text);
+      QryClientesNOMBRE_CLIENTE.Value := Trim(Edit2.Text);
+      QryClientesDIRECCION.Value      := Trim(Edit3.Text);
+      QryProductoCLIENTE.Value        := StrToInt(Edit1.Text);
+      QryClientes.Post;
+
+      QryProducto.Insert;
+      QryProductoPRODUCTO.Value           := StrToInt(Edit4.Text);
+      QryProductoPRODUCTO_1.Value         := StrToInt(Edit4.Text);
+      QryProductoNOMBRE_PRODUCTO.Value    := Edit5.Text;
+      QryProductoCANTIDAD.Value           := StrToInt(Edit6.Text);
+      QryProductoVALOR.Value              :=
+
+
+
+    end;
+  end;
+end;
+
+procedure TFrmCrudClientes.validar_campos;
+begin
+
+  validar := False;
+
+  if Edit1.Text = '' then
+  begin
+    Application.MessageBox(PChar('Campo de identificación del cliente Vacío.'), '¡Campo requerido!', MB_ICONWARNING);
+    Edit1.SetFocus;
+    Exit;
+  end;
+
+  if Edit2.Text = '' then
+  begin
+    Application.MessageBox(PChar('Campo del nombre completo del cliente Vacío.'), '¡Campo requerido!', MB_ICONWARNING);
+    Edit2.SetFocus;
+    Exit;
+  end;
+
+  if Edit3.Text = '' then
+  begin
+    Application.MessageBox(PChar('Campo de la dirección del cliente Vacío.'), '¡Campo requerido!', MB_ICONWARNING);
+    Edit3.SetFocus;
+    Exit;
+  end;
+
+  if Edit4.Text = '' then
+  begin
+    Application.MessageBox(PChar('Campo identificación del producto Vacío.'), '¡Campo requerido!', MB_ICONWARNING);
+    Edit4.SetFocus;
+    Exit;
+  end;
+
+  if Edit5.Text = '' then
+  begin
+    Application.MessageBox(PChar('Campo nombre del producto Vacío.'), '¡Campo requerido!', MB_ICONWARNING);
+    Edit5.SetFocus;
+    Exit;
+  end;
+
+  if Edit6.Text = '' then
+  begin
+    Application.MessageBox(PChar('Campo cantidad del producto Vacío.'), '¡Campo requerido!', MB_ICONWARNING);
+    Edit6.SetFocus;
+    Exit;
+  end;
+
+  if Edit7.Text = '' then
+  begin
+    Application.MessageBox(PChar('Campo valor unitario del producto Vacío.'), '¡Campo requerido!', MB_ICONWARNING);
+    Edit7.SetFocus;
+    Exit;
+  end;
+
+  validar := True;
+
+
+end;
+
+end.

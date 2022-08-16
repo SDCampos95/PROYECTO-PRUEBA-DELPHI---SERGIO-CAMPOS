@@ -1,0 +1,16 @@
+object Conexion: TConexion
+  Height = 101
+  Width = 251
+  object DBConexion: TADOConnection
+    CommandTimeout = 60
+    ConnectionString = 
+      'Provider=SQLOLEDB.1;Password=1234;Persist Security Info=True;Use' +
+      'r ID=sa;Initial Catalog=CRUD_DELPHI;Data Source=DESKTOP-DTMDKN7'
+    CursorLocation = clUseServer
+    IsolationLevel = ilReadCommitted
+    LoginPrompt = False
+    Provider = 'SQLOLEDB.1'
+    Left = 104
+    Top = 32
+  end
+end

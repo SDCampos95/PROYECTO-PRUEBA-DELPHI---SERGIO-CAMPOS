@@ -1,0 +1,27 @@
+unit UEjecucionesSQL;
+
+interface
+
+uses
+  SysUtils, Classes, DtConexion, DB, DBTables, ADODB;
+
+type
+  TDtmoduloSQL = class(TDataModule)
+    QryClientes: TQuery;
+    QryGestionClientes: TADOQuery;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  DtmoduloSQL: TDtmoduloSQL;
+
+implementation
+
+
+
+{$R *.dfm}
+
+end.

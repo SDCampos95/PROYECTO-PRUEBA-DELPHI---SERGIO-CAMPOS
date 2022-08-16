@@ -1,0 +1,87 @@
+unit UEjercicio1;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls, ExtCtrls, ComCtrls, Buttons;
+
+type
+  TFrmSerieFibonacci = class(TForm)
+    Panel1: TPanel;
+    Panel2: TPanel;
+    Label1: TLabel;
+    BitBtn1: TBitBtn;
+    Label2: TLabel;
+    ListBox1: TListBox;
+    Edit1: TEdit;
+    procedure BitBtn1Click(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure FormActivate(Sender: TObject);
+    procedure Edit1KeyPress(Sender: TObject; var Key: Char);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  FrmSerieFibonacci: TFrmSerieFibonacci;
+
+implementation
+
+{$R *.dfm}
+
+procedure TFrmSerieFibonacci.BitBtn1Click(Sender: TObject);
+  var
+    n, a, b, c, i : Integer;
+begin
+
+  // LIMPIAR VISUALIZADOR DE RESULTADO //
+  ListBox1.Items.Clear;
+
+  if Edit1.Text <> EmptyStr then
+  begin
+    n := StrToInt(Edit1.Text);
+    a := 1;
+    b := 1;
+    c := 0;
+
+    For i := 1 to n do
+    begin
+      a := b;
+      b := c;
+      c := a + b;
+
+      ListBox1.Items.Add(IntToStr(c));
+    end;
+  end
+  else
+  begin
+    Application.MessageBox(PChar('Por favor ingrese un número.'), '¡Campo requerido!', MB_ICONWARNING);
+    Edit1.SetFocus;
+    Exit;
+  end;
+end;
+
+procedure TFrmSerieFibonacci.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+  Action := caFree;
+end;
+
+procedure TFrmSerieFibonacci.FormActivate(Sender: TObject);
+begin
+  top := 150;
+  left := 338;
+  Edit1.SetFocus;
+end;
+
+procedure TFrmSerieFibonacci.Edit1KeyPress(Sender: TObject; var Key: Char);
+begin
+  // VALIDAR EL INGRESO DE SOLO NÚMEROS Y ENTEROS //
+  //if not (Key in ['0'..'9', #8, ]) then   //SysUtils.DecimalSeparator
+   // Key := #0;
+end;
+
+end.

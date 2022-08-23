@@ -14,11 +14,12 @@ uses
 
 begin
   Application.Initialize;
+  Application.CreateForm(TConexion, Conexion);
+  Application.CreateForm(TDataModule1, DataModule1);
   Application.CreateForm(TFrmPrincipal, FrmPrincipal);
   Application.CreateForm(TFrmSerieFibonacci, FrmSerieFibonacci);
   Application.CreateForm(TFrmCalcularSalarioSemanal, FrmCalcularSalarioSemanal);
   Application.CreateForm(TFrmCrudClientes, FrmCrudClientes);
-  Application.CreateForm(TConexion, Conexion);
-  Application.CreateForm(TDataModule1, DataModule1);
+
   Application.Run;
 end.

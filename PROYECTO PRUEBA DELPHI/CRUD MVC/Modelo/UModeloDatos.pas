@@ -99,29 +99,41 @@ implementation
 {%CLASSGROUP 'Vcl.Controls.TControl'}
 
 {$R *.dfm}
-// VALIDACION DE UN CLIENTE EN LA BASE DE DATOS.  //
-Function TDataModule1.ValidarClienteBD(Datos:TUControladorDatos;Cliente_Id:Integer):Boolean;
-begin
-    QryCliente.Close;
-    QryCliente.Parameters[0].Value := Cliente_Id;
-    QryCliente.Open;
 
-    If ( QryCliente.RecordCount = 1 ) Then
-     Begin
-         Datos.Clie_Identificacion  := QryClienteCLIENTE.Value;
-         Datos.Clie_Nombre          := QryClienteNOMBRE_CLIENTE.Value;
-         Datos.Clie_Direccion       := QryClienteDIRECCION.Value;
-         Result  := True;
-     End
-       Else
-          Begin Result := False; End;
 
-    QryProductos.Close;
-    QryProductos.Parameters[0].Value := Datos.Fact_Producto_id;
-    QryProductos.Open;
+    // VALIDACION DE UN CLIENTE EN LA BASE DE DATOS.  //
+    Function TDataModule1.ValidarClienteBD(Datos: TUControladorDatos;
+      Cliente_Id: Integer): Boolean;
+    begin
+      QryCliente.Close;
+      QryCliente.Parameters[0].Value := Cliente_Id;
+      QryCliente.Open;
 
-    Datos.Fact_Producto_id := QryProductosPRODUCTO.Value;
-end;
+      If (QryCliente.RecordCount = 1) Then
+      Begin
+        Datos.Clie_Identificacion := QryClienteCLIENTE.Value;
+        Datos.Clie_Nombre := QryClienteNOMBRE_CLIENTE.Value;
+        Datos.Clie_Direccion := QryClienteDIRECCION.Value;
+        Result := True;
+      End
+      Else
+      Begin
+        Result := False;
+      End;
+
+//      QryProductos.Close;
+//      QryProductos.Parameters[0].Value := Datos.Fact_Producto_id;
+//      QryProductos.Open;
+//
+//      Datos.Fact_Producto_id := QryProductosPRODUCTO.Value;
+
+     QryProductosActivos.Close;
+     QryProductosActivos.Open;
+
+     Datos.Fact_Producto_id := QryProductosActivosPRODUCTO.Value;
+
+    end;
+
 // REGISTRO DE UN CLIENTE EN LA BASE DE DATOS. //
 Function TDataModule1.RegistrarClienteBD(Datos:TUControladorDatos;Actividad:String):Currency;
 begin
@@ -190,10 +202,8 @@ begin
          QryProductos.Post;
          Conexion.DBConexion.CommitTrans;
 
-         QryProductosActivos.Active := False;
-         QryProductosActivos.Close;
-         QryProductosActivos.Active := True;
-         QryProductosActivos.Open;
+        DtConexion.Conexion.DBConexion.Close;
+        DtConexion.Conexion.DBConexion.Open;
 
       Result   :=  1;
    Except
@@ -407,5 +417,3 @@ end;
 
 
 end.
-
-

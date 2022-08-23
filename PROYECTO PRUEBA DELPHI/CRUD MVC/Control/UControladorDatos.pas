@@ -96,7 +96,7 @@ begin
     Try
         If ( DataModule1.ValidarProductoBD(Self,Producto_Id) = True ) Then
          Begin
-            Result := 'El Cliente ya se encuentra registrado en la base de datos.';
+            Result := 'El producto ya se encuentra registrado en la base de datos.';
          End Else Begin Result := '' ; End;
     Finally
       DataModule1.Free;

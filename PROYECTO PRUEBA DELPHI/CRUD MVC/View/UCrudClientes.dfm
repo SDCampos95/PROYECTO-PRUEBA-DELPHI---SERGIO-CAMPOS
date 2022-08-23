@@ -201,7 +201,7 @@ object FrmCrudClientes: TFrmCrudClientes
     object TabSheet1: TTabSheet
       Caption = 'Clientes'
       object GroupBox1: TGroupBox
-        Left = 3
+        Left = 5
         Top = 3
         Width = 657
         Height = 217
@@ -1752,8 +1752,8 @@ object FrmCrudClientes: TFrmCrudClientes
         Caption = 'Cantidad:'
       end
       object Label13: TLabel
-        Left = 159
-        Top = 108
+        Left = 3
+        Top = 263
         Width = 291
         Height = 20
         Caption = 'Valor total de articulos agregados a la canasta.'
@@ -1801,7 +1801,7 @@ object FrmCrudClientes: TFrmCrudClientes
       end
       object Button8: TButton
         Left = 543
-        Top = 168
+        Top = 160
         Width = 114
         Height = 41
         Caption = 'Agregar'
@@ -1812,7 +1812,7 @@ object FrmCrudClientes: TFrmCrudClientes
         Left = 3
         Top = 146
         Width = 534
-        Height = 148
+        Height = 111
         Color = clWhite
         DataSource = DataModule1.DtsServiciosFacturados
         GradientEndColor = clSkyBlue
@@ -1873,7 +1873,7 @@ object FrmCrudClientes: TFrmCrudClientes
       end
       object BitBtn1: TBitBtn
         Left = 543
-        Top = 215
+        Top = 207
         Width = 114
         Height = 42
         Caption = 'Generar Factura'

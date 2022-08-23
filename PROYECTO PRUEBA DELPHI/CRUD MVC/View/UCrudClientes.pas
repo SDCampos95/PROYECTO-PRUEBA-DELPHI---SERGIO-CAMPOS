@@ -134,18 +134,16 @@ end;
 
 procedure TFrmCrudClientes.FormCreate(Sender: TObject);
 begin
-    // SE INSTANCIAN LA CONEXION Y EL MODELO DE DATOS. //
-     DtConexion   := TConexion.Create(Nil);
-     UModeloDatos        := TDataModule1.Create(Nil);
-     UControladorDatos  :=  TUControladorDatos.Create;
+  // SE INSTANCIAN LA CONEXION Y EL MODELO DE DATOS. //
+  DtConexion           := TConexion.Create(Nil);
+  UModeloDatos := TDataModule1.Create(Nil);
+  UControladorDatos := TUControladorDatos.Create;
 
-     UModeloDatos.QryProductosActivos.Close;
-     UModeloDatos.QryProductosActivos.Open;
-     UModeloDatos.QryProductosActivos.Refresh;
+  // DtConexion.DBConexion.Connected := True;
+  // DtConexion.DBConexion.Open;
 
-     UModeloDatos.QryServiciosFacturados.Close;
-     UModeloDatos.QryServiciosFacturados.Open;
-     UModeloDatos.QryServiciosFacturados.Refresh;
+  UModeloDatos.QryProductosActivos.Close;
+  UModeloDatos.QryProductosActivos.Open;
 end;
 
 procedure TFrmCrudClientes.ConsultaDetalleFactura(Factura:Currency);
@@ -197,29 +195,35 @@ end;
 
 procedure TFrmCrudClientes.Edit1Exit(Sender: TObject);
 begin
- If (Trim(Edit1.Text) <> EmptyStr ) Then
+  If (Trim(Edit1.Text) <> EmptyStr) Then
   Begin
-      UControladorDatos := TUControladorDatos.Create;
-      Try
-          If ( UControladorDatos.ValidarClienteBD(StrToIntDef(Trim(Edit1.Text),99999)) <> EmptyStr ) Then
-           Begin
-              Edit1.Text := CurrToStr(UControladorDatos.Clie_Identificacion);
-              Edit2.Text := UControladorDatos.Clie_Nombre;
-              Edit3.Text := UControladorDatos.Clie_Direccion;
-              Button1.Enabled := False;
-              Button2.Enabled := True;
-              MessageDlg('El cliente ya esta registrado, si desea puede actualizar datos', mtInformation,[mbOk], 0, mbOk); Exit;
-           End
-             Else
-                Begin
-                    Button1.Enabled := True;
-                    Button2.Enabled := False;
-                    Edit1.Enabled := True;
-                    //LimpiaClientes;
-                End;
-      Finally
-        UControladorDatos.Free;
+    UControladorDatos := TUControladorDatos.Create;
+    Try
+      If (UControladorDatos.ValidarClienteBD(StrToIntDef(Trim(Edit1.Text),
+        99999)) <> EmptyStr) Then
+      Begin
+        Edit1.Text := CurrToStr(UControladorDatos.Clie_Identificacion);
+        Edit2.Text := UControladorDatos.Clie_Nombre;
+        Edit3.Text := UControladorDatos.Clie_Direccion;
+        Button1.Enabled := False;
+        Button2.Enabled := True;
+        MessageDlg
+          ('El cliente ya esta registrado, si desea puede actualizar datos',
+          mtInformation, [mbOk], 0, mbOk);
+        Exit;
+      End
+      Else
+      Begin
+        Edit2.Text := '';
+        Edit3.Text := '';
+        Button1.Enabled := True;
+        Button2.Enabled := False;
+        Edit1.Enabled := True;
+        // LimpiaClientes;
       End;
+    Finally
+      UControladorDatos.Free;
+    End;
   End;
 end;
 
@@ -255,84 +259,97 @@ end;
 // CONSULTA DE FACTURA //
 procedure TFrmCrudClientes.Edit6Exit(Sender: TObject);
 begin
-    If (Trim(Edit6.Text) <> EmptyStr ) Then
+  If (Trim(Edit6.Text) <> EmptyStr) Then
+  Begin
+    UControladorDatos := TUControladorDatos.Create;
+
+    // Try
+    If (UControladorDatos.ValidarClienteBD(StrToIntDef(Trim(Edit6.Text), 99999))
+      <> EmptyStr) Then
+    Begin
+      Edit6.Text := CurrToStr(UControladorDatos.Clie_Identificacion);
+      Edit9.Text := UControladorDatos.Clie_Nombre;
+
+      DBLookupComboBox1.Enabled := True;
+      UModeloDatos.QryProductosActivos.Close;
+      UModeloDatos.QryProductosActivos.Open;
+      DBLookupComboBox1.Enabled := True;
+      DBLookupComboBox1.KeyValue  := UControladorDatos.Fact_Producto_id;
+
+
+      Edit10.Enabled := True;
+      // BitBtn8.Enabled           := True;
+      Button8.Enabled := True;
+
+      If (UModeloDatos.GenerarConsecutivoFactura(UControladorDatos) = True) Then
       Begin
-        UControladorDatos := TUControladorDatos.Create;
+        If UControladorDatos.Fact_Tipo_Factura = 'PENDIENTE' then
+        Begin
+          If MessageDlg('El cliente seleccionado tiene un factura en proceso ' +
+            sLineBreak +
+            'Si desea puede seguir en el proceso de facturacion de la misma (' +
+            FormatFloat('0000', UControladorDatos.Cons_Factura) +
+            '), o de lo contrario debera eliminar la factura para poder generar una nueva.'
+            + sLineBreak + 'Desea seguir editando la factura?', mtConfirmation,
+            [mbYes, mbNo], 0) = mrYes then
+          Begin
 
-        //Try
-          If ( UControladorDatos.ValidarClienteBD(StrToIntDef(Trim(Edit6.Text),99999)) <> EmptyStr ) Then
-           Begin
-               Edit6.Text  := CurrToStr(UControladorDatos.Clie_Identificacion);
-               Edit9.Text := UControladorDatos.Clie_Nombre;
-
-               //DBLookupComboBox1.KeyValue := UControladorDatos.Fact_Producto_id;
-               DBLookupComboBox1.Enabled := True;
-
-               Edit10.Enabled     := True;
-               //BitBtn8.Enabled           := True;
-               Button8.Enabled   := True;
-
-               If ( UModeloDatos.GenerarConsecutivoFactura(UControladorDatos) = True    ) Then
-                Begin
-                     If UControladorDatos.Fact_Tipo_Factura = 'PENDIENTE' then
-                      Begin
-                           If MessageDlg('El cliente seleccionado tiene un factura en proceso ' + sLineBreak +
-                           'Si desea puede seguir en el proceso de facturacion de la misma ('+FormatFloat('0000',UControladorDatos.Cons_Factura)+'), o de lo contrario debera eliminar la factura para poder generar una nueva.' + sLineBreak +
-                           'Desea seguir editando la factura?' ,mtConfirmation, [mbYes, mbNo], 0 ) = mrYes then
-                             Begin
-
-                                 Factura                := UControladorDatos.Cons_Factura;
-                                 UModeloDatos.ConsultaDetalle(Factura);
-                             End
-                               Else
-                                  Begin
-                                      Exit;
-                                  End;
-                      End
-                        Else
-                           Begin
-                               Factura              := UControladorDatos.Cons_Factura;
-                               UModeloDatos.ConsultaDetalle(Factura);
-                               Label14.Caption  := FormatFloat('0000',Factura);
-                           End;
+            Factura := UControladorDatos.Cons_Factura;
+            UModeloDatos.ConsultaDetalle(Factura);
+          End
+          Else
+          Begin
+            Exit;
+          End;
+        End
+        Else
+        Begin
+          Factura := UControladorDatos.Cons_Factura;
+          UModeloDatos.ConsultaDetalle(Factura);
+          Label14.Caption := FormatFloat('0000', Factura);
+        End;
 
 
-//                      UModeloDatos.QryProductosActivos.Close;
-//                      UModeloDatos.QryProductosActivos.Parameters[0].Value := Factura ;
-//                      UModeloDatos.QryProductosActivos.Open;
+        // UModeloDatos.QryProductosActivos.Close;
+        // UModeloDatos.QryProductosActivos.Parameters[0].Value := Factura ;
+        // UModeloDatos.QryProductosActivos.Open;
 
-                      //UModeloDatos.ProdcutosDisponibles(Factura);
-                      //UModeloDatos.ProdcutosDisponibles(Factura);
+        // UModeloDatos.ProdcutosDisponibles(Factura);
+        // UModeloDatos.ProdcutosDisponibles(Factura);
 
-
-                      ConsultaDetalleFactura(Factura);
-                End
-                  Else
-                      Begin
-                         MessageDlg('No es posible iniciar el proceso de facturación por favor cierre e intente de nuevo, o comuníquese con el administrador del sistema ', mtInformation,[mbOk], 0, mbOk);
-                         Exit;
-                      End;
-
-           End
-             Else
-                Begin
-                    If MessageDlg('PARA PODER REALIZAR UNA FACTURA EL CLIENTE DEBE ESTAR REGISTRADO, DESEA REGISTRARLO ? '  ,mtConfirmation, [mbYes, mbNo], 0 ) = mrYes then
-                     Begin
-                         Edit1.Text :=  Trim(Edit6.Text);
-                     End
-                       Else
-                          Begin
-                              Exit;
-                          End;
-
-                          DBLookupComboBox1.Enabled := False; Edit10.Enabled     := False;
-                          //BitBtn8.Enabled           := False;
-                          Button8.Enabled   := False;
-                End;
-        //Finally
-          //UModeloDatos.Free;
-        //End;
+        ConsultaDetalleFactura(Factura);
+      End
+      Else
+      Begin
+        MessageDlg
+          ('No es posible iniciar el proceso de facturación por favor cierre e intente de nuevo, o comuníquese con el administrador del sistema ',
+          mtInformation, [mbOk], 0, mbOk);
+        Exit;
       End;
+
+    End
+    Else
+    Begin
+      If MessageDlg
+        ('PARA PODER REALIZAR UNA FACTURA EL CLIENTE DEBE ESTAR REGISTRADO, DESEA REGISTRARLO ? ',
+        mtConfirmation, [mbYes, mbNo], 0) = mrYes then
+      Begin
+        Edit1.Text := Trim(Edit6.Text);
+      End
+      Else
+      Begin
+        Exit;
+      End;
+
+      DBLookupComboBox1.Enabled := False;
+      Edit10.Enabled := False;
+      // BitBtn8.Enabled           := False;
+      Button8.Enabled := False;
+    End;
+    // Finally
+    // UModeloDatos.Free;
+    // End;
+  End;
 end;
 
 procedure TFrmCrudClientes.Validar_CamposCliente;
@@ -406,6 +423,10 @@ end;
 procedure TFrmCrudClientes.PageControl1Change(Sender: TObject);
 begin
 
+  DBLookupComboBox1.Enabled := True;
+
+  DBLookupComboBox1.KeyValue := UControladorDatos.Fact_Producto_id;
+
 end;
 
 // REGISTRAR NUEVO CLIENTE //
@@ -422,13 +443,18 @@ begin
       Edit9.Text := '';
       DBLookupComboBox1.KeyValue := Null;
       Edit10.Text := '';
+      Label13.Caption := 'Valor total de articulos agregados a la canasta.';
       Label14.Caption := '##-##-##';
 
       PageControl1.Pages[3].TabVisible := true;
       PageControl1.ActivePageIndex := 3;
-      Edit13.Text :=  '000' + CurrToStr( Temporal_Factura  - 1 );
+      Edit13.Text :=  '000' + CurrToStr( Temporal_Factura );
       Edit13.SetFocus;
-    end;
+    end
+   else
+   begin
+     Exit;
+   end;
 
 
 
@@ -458,126 +484,170 @@ end;
 
 procedure TFrmCrudClientes.Button3Click(Sender: TObject);
 begin
-  Close();
-  Application.CreateForm(TFrmCrudClientes, FrmCrudClientes);
-  FrmCrudClientes.Show;
+
+  // LIMPIAR CAMPOS //
+
+  if (PageControl1.ActivePage = TabSheet1) then
+  begin
+    Edit1.Text := '';
+    Edit2.Text := '';
+    Edit3.Text := '';
+  end;
+
+  if (PageControl1.ActivePage = TabSheet2) then
+  begin
+    Edit4.Text := '';
+    Edit5.Text := '';
+    Edit7.Text := '';
+  end;
+
+  if (PageControl1.ActivePage = TabSheet3) then
+  begin
+    Edit9.Text := '';
+    Edit10.Text := '';
+    Label14.Caption := '##-##-##';
+    DBLookupComboBox1.KeyValue := 0;
+    DBGrid1.DataSource := nil;
+  end;
+
+  if (PageControl1.ActivePage = TabSheet4) then
+  begin
+    Edit13.Text := '';
+    Edit14.Text := '';
+    Edit16.Text := '';
+    DateTimePicker1.Date := UModeloDatos.fechahora;
+    DBGrid2.DataSource := nil;
+
+    PageControl1.ActivePageIndex := 0;
+
+  end;
 end;
 
 procedure TFrmCrudClientes.Button4Click(Sender: TObject);
 begin
-    validar_campos_producto;
+  validar_campos_producto;
 
-     If validar = True Then
-     Begin
-        Insert_Update_Producto(Button4.Caption);   // SE LLAMA EL PROCEDIMIENTO DENTRO DE LA MISMA UNIDAD //
-        Button3Click(Sender);
-        LimpiarProductos;
-        UModeloDatos.QryProductosActivos.close;
-        UModeloDatos.QryProductosActivos.open;
-        DBLookupComboBox1.ListSource  := UModeloDatos.DsProductosActivos;
-     End;
+  If validar = True Then
+  Begin
+    Insert_Update_Producto(Button4.Caption);
+    // SE LLAMA EL PROCEDIMIENTO DENTRO DE LA MISMA UNIDAD //
+
+    UModeloDatos.QryProductosActivos.Close;
+    UModeloDatos.QryProductosActivos.Open;
+    DBLookupComboBox1.ListSource := UModeloDatos.DsProductosActivos;
+
+    Button3Click(Sender);
+  End;
 
 end;
 
 procedure TFrmCrudClientes.Button5Click(Sender: TObject);
 begin
-    validar_campos_producto;
+  validar_campos_producto;
 
-    If validar = True Then
-     Begin
-         Insert_Update_Producto(Button2.Caption);
-         Button3Click(Sender);
-         UModeloDatos.QryProductosActivos.close;
-        UModeloDatos.QryProductosActivos.open;
-        DBLookupComboBox1.ListSource  := UModeloDatos.DsProductosActivos;
-     End;
+  If validar = True Then
+  Begin
+    Insert_Update_Producto(Button2.Caption);
+    Button3Click(Sender);
+    UModeloDatos.QryProductosActivos.Close;
+    UModeloDatos.QryProductosActivos.Open;
+    DBLookupComboBox1.ListSource := UModeloDatos.DsProductosActivos;
+  End;
 end;
 
 procedure TFrmCrudClientes.Button6Click(Sender: TObject);
 begin
-    // ELIMINAR REGISTRO //
-     if Application.MessageBox(('¿Esta seguro de eliminar el registros indicado?'), 'Confirmación', MB_ICONQUESTION or MB_YESNO + MB_DEFBUTTON2) = ID_YES then
-     begin
-       If ( UModeloDatos.EliminarTraza( StrToInt( Edit4.Text)) = True ) Then
-        Begin
-          MessageDlg('Registro elimanado correctamente', mtInformation,[mbOk], 0, mbOk);
-          Button3Click(Sender);
-          Exit;
-        End
-        Else
-        Begin
-          MessageDlg('No fue posible eliminar la factura.', mtInformation,[mbOk], 0, mbOk);
-          Exit;
-        End;
-     end
-     else
-     begin
-       Exit;
-     end;
-
+  // ELIMINAR REGISTRO //
+  if Application.MessageBox(('¿Esta seguro de eliminar el registros indicado?'),
+    'Confirmación', MB_ICONQUESTION or MB_YESNO + MB_DEFBUTTON2) = ID_YES then
+  begin
+    If (UModeloDatos.EliminarTraza(StrToInt(Edit4.Text)) = True) Then
+    Begin
+      MessageDlg('Registro elimanado correctamente', mtInformation,
+        [mbOk], 0, mbOk);
+      Button3Click(Sender);
+      Exit;
+    End
+    Else
+    Begin
+      MessageDlg('No fue posible eliminar la factura.', mtInformation,
+        [mbOk], 0, mbOk);
+      Exit;
+    End;
+  end
+  else
+  begin
+    Exit;
+  end;
 
 end;
 
 procedure TFrmCrudClientes.Button7Click(Sender: TObject);
 begin
-    // ELIMINAR REGISTRO DE CLIENTE //
-     if Application.MessageBox(('¿Esta seguro de eliminar el registros indicado?'), 'Confirmación', MB_ICONQUESTION or MB_YESNO + MB_DEFBUTTON2) = ID_YES then
-     begin
-       If ( UModeloDatos.EliminarTraza( StrToInt( Edit1.Text)) = True ) Then
-        Begin
-          MessageDlg('Registro elimanado correctamente', mtInformation,[mbOk], 0, mbOk);
-          Button3Click(Sender); // Botón Nuevo Registro
-          Exit;
-        End
-        Else
-        Begin
-          MessageDlg('No fue posible eliminar la factura.', mtInformation,[mbOk], 0, mbOk);
-          Exit;
-        End;
-     end
-     else
-     begin
-       Exit;
-     end;
+  // ELIMINAR REGISTRO DE CLIENTE //
+  if Application.MessageBox(('¿Esta seguro de eliminar el registros indicado?'),
+    'Confirmación', MB_ICONQUESTION or MB_YESNO + MB_DEFBUTTON2) = ID_YES then
+  begin
+    If (UModeloDatos.EliminarTraza(StrToInt(Edit1.Text)) = True) Then
+    Begin
+      MessageDlg('Registro elimanado correctamente', mtInformation,
+        [mbOk], 0, mbOk);
+      Button3Click(Sender); // Botón Nuevo Registro
+      Exit;
+    End
+    Else
+    Begin
+      MessageDlg('No fue posible eliminar la factura.', mtInformation,
+        [mbOk], 0, mbOk);
+      Exit;
+    End;
+  end
+  else
+  begin
+    Exit;
+  end;
 end;
 
 procedure TFrmCrudClientes.Button8Click(Sender: TObject);
 begin
-     validar_campos_factura;
+  validar_campos_factura;
 
-     If validar = True Then
-     Begin
-        Insert_Generar_Factura(Button8.Caption);   // SE LLAMA EL PROCEDIMIENTO DENTRO DE LA MISMA UNIDAD //
-     End;
+  If validar = True Then
+  Begin
+    Insert_Generar_Factura(Button8.Caption);
+    // SE LLAMA EL PROCEDIMIENTO DENTRO DE LA MISMA UNIDAD //
+  End;
 
 end;
 
-
 procedure TFrmCrudClientes.Insert_Generar_Factura(Accion: string);
 begin
-    UControladorDatos.Fact_Cantidad      := StrToCurr(Edit10.Text);
-    UControladorDatos.Fact_NUMERO        := Factura;
-    UControladorDatos.Fact_Fecha         := UModeloDatos.fechahora;
+  UControladorDatos.Fact_Cantidad := StrToCurr(Edit10.Text);
+  UControladorDatos.Fact_NUMERO := Factura;
+  UControladorDatos.Fact_Fecha := UModeloDatos.fechahora;
 
-    If  UModeloDatos.FacturarProducto(UControladorDatos) = True Then
-     Begin
-          //UModeloDatos.ProdcutosDisponibles(Factura);
+  If UModeloDatos.FacturarProducto(UControladorDatos) = True Then
+  Begin
+    // UModeloDatos.ProdcutosDisponibles(Factura);
 
-          UModeloDatos.ConsultaDetalle(Factura);
-          Edit10.Text := EmptyStr;
+    UModeloDatos.ConsultaDetalle(Factura);
+    Edit10.Text := EmptyStr;
 
-          DBGrid1.DataSource            := UModeloDatos.DtsServiciosFacturados;
-          DBLookupComboBox1.ListSource  := UModeloDatos.DsProductosActivos;
+    DBGrid1.DataSource := UModeloDatos.DtsServiciosFacturados;
+    DBLookupComboBox1.ListSource := UModeloDatos.DsProductosActivos;
 
-          DBLookupComboBox1.SetFocus;
-     End
-       Else
-      Begin
-          MessageDlg('Error al momento de ingresar el servicio.', mtInformation,[mbOk], 0, mbOk); Exit;
-      End;
+    DBLookupComboBox1.SetFocus;
+  End
+  Else
+  Begin
+    MessageDlg('Error al momento de ingresar el servicio.', mtInformation,
+      [mbOk], 0, mbOk);
+    Exit;
+  End;
 
-    Label14.Caption  := FormatFloat('0000',Factura);
-    Label13.Caption  := 'VALOR TOTAL : $'+  formatfloat('#,##0', UControladorDatos.Fact_Valor_Total );
+  Label14.Caption := FormatFloat('0000', Factura);
+  Label13.Caption := 'VALOR TOTAL : $' + FormatFloat('#,##0',
+    UControladorDatos.Fact_Valor_Total);
 
 end;
 
@@ -586,43 +656,59 @@ begin
 
   validar := False;
 
-  If ( Edit6.Text = EmptyStr ) Then
-    Begin
-        MessageDlg('Para poder registrar productos debe Ingresar el cliente.', mtInformation,[mbOk], 0, mbOk); Exit;
-        Edit6.SetFocus; Exit;
-    End;
-   If ( DBLookupComboBox1.KeyValue = 0 ) Then
-    Begin
-        MessageDlg('Debe seleccione el producto a registrar.', mtInformation,[mbOk], 0, mbOk); Exit;
-        DBLookupComboBox1.SetFocus; Exit;
-    End;
+  If (Edit6.Text = EmptyStr) Then
+  Begin
+    MessageDlg('Para poder registrar productos debe Ingresar el cliente.',
+      mtInformation, [mbOk], 0, mbOk);
+    Exit;
+    Edit6.SetFocus;
+    Exit;
+  End;
+  If (DBLookupComboBox1.KeyValue = 0) Then
+  Begin
+    MessageDlg('Debe seleccione el producto a registrar.', mtInformation,
+      [mbOk], 0, mbOk);
+    Exit;
+    DBLookupComboBox1.SetFocus;
+    Exit;
+  End;
 
-   If ( Edit10.Text = EmptyStr ) Then
-    Begin
-        MessageDlg('Ingrese la cantidad a registrar de los productos.', mtInformation,[mbOk], 0, mbOk); Exit;
-        Edit10.SetFocus; Exit;
-    End;
+  If (Edit10.Text = EmptyStr) Then
+  Begin
+    MessageDlg('Ingrese la cantidad a registrar de los productos.',
+      mtInformation, [mbOk], 0, mbOk);
+    Exit;
+    Edit10.SetFocus;
+    Exit;
+  End;
 
-   If ( StrToCurrDef( (Edit10.Text),9999)  = 9999 ) Then
-    Begin
-        MessageDlg('Solo se permite el Ingreso de numeros.', mtInformation,[mbOk], 0, mbOk); Exit;
-        Edit10.SetFocus; Exit;
-    End;
+  If (StrToCurrDef((Edit10.Text), 9999) = 9999) Then
+  Begin
+    MessageDlg('Solo se permite el Ingreso de numeros.', mtInformation, [mbOk],
+      0, mbOk);
+    Exit;
+    Edit10.SetFocus;
+    Exit;
+  End;
 
-   If ( ( StrToCurr(Edit10.Text) <= 0 ) Or ( StrToCurr(Edit10.Text) > 9998 )  )Then
-    Begin
-        MessageDlg('La cantidad por producto a registrar debe estar entre 1 y 9998.', mtInformation,[mbOk], 0, mbOk); Exit;
-        Edit10.SetFocus; Exit;
-    End;
+  If ((StrToCurr(Edit10.Text) <= 0) Or (StrToCurr(Edit10.Text) > 9998)) Then
+  Begin
+    MessageDlg
+      ('La cantidad por producto a registrar debe estar entre 1 y 9998.',
+      mtInformation, [mbOk], 0, mbOk);
+    Exit;
+    Edit10.SetFocus;
+    Exit;
+  End;
 
-    validar := True;
+  validar := True;
 
 end;
 
 procedure TFrmCrudClientes.DBLookupComboBox1Exit(Sender: TObject);
 begin
 
-  if DBLookupComboBox1.KeyValue <> Null then
+  if (DBLookupComboBox1.KeyValue <> Null) then
   begin
     UControladorDatos.Fact_Producto_id   := DBLookupComboBox1.KeyValue;
     UControladorDatos.Fact_Valor_Unit    := UModeloDatos.QryProductosVALOR.Value;
@@ -663,26 +749,29 @@ end;
 
 procedure TFrmCrudClientes.Insert_Update_Producto(Accion: string);
 begin
-    UControladorDatos := TUControladorDatos.Create;
-    Try
-       UControladorDatos.Prod_PRODUCTO          := StrToIntDef(Edit4.Text,999);
-       UControladorDatos.Prod_NOMBRE_PRODUCTO   := UpperCase(Edit5.Text);
-       UControladorDatos.Prod_VALOR             := StrToCurr(UpperCase(Edit7.Text));
+  UControladorDatos := TUControladorDatos.Create;
+  Try
+    UControladorDatos.Prod_PRODUCTO := StrToIntDef(Edit4.Text, 999);
+    UControladorDatos.Prod_NOMBRE_PRODUCTO := UpperCase(Edit5.Text);
+    UControladorDatos.Prod_VALOR := StrToCurr(UpperCase(Edit7.Text));
 
-       If ( UControladorDatos.RegistrarProductoBD(Accion) <> 'Error.' ) Then
-       Begin
-           MessageDlg('Operacion Exitosa.', mtInformation,[mbOk], 0, mbOk);
-           LimpiaClientes;
-       End
-         Else
-            Begin
-               MessageDlg('Se presentaron errores.', mtError,[mbOk], 0, mbOk);
-               Exit;
-            End;
-
-    Finally
-      UControladorDatos.Free;
+    If (UControladorDatos.RegistrarProductoBD(Accion) <> 'Error.') Then
+    Begin
+      MessageDlg('Operacion Exitosa.', mtInformation, [mbOk], 0, mbOk);
+//      UModeloDatos.QryProductosActivos.Close;
+//      UModeloDatos.QryProductosActivos.Parameters[0].Value := Factura;
+//      UModeloDatos.QryProductosActivos.Open;
+      LimpiaClientes;
+    End
+    Else
+    Begin
+      MessageDlg('Se presentaron errores.', mtError, [mbOk], 0, mbOk);
+      Exit;
     End;
+
+  Finally
+    UControladorDatos.Free;
+  End;
 
 end;
 

@@ -252,6 +252,7 @@ object DataModule1: TDataModule1
     Top = 88
   end
   object QryProductosActivos: TADOQuery
+    Active = True
     Connection = Conexion.DBConexion
     CursorType = ctStatic
     Parameters = <>
